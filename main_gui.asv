@@ -636,51 +636,39 @@ function button_forward_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 theta(1) = str2double(get(handles.theta1,'String'));
 set(handles.slider1, 'value', theta(1));
-theta(2) = str2double(get(handles.theta2,'String'));
-set(handles.slider2, 'value', theta(2));
-d3 = str2double(get(handles.d3,'String'));
-set(handles.slider3, 'value', d3);
-theta(4) = str2double(get(handles.theta4,'String'));
-set(handles.slider4, 'value', theta(4));
 global scara
 scara = scara.set_joint_variable(2, deg2rad(get(handles.slider1, 'Value')));
-scara = scara.set_joint_variable(3, deg2rad(get(handles.slider2, 'Value')));
-scara = scara.set_joint_variable(4, get(handles.slider3, 'Value'));
-scara = scara.set_joint_variable(5, deg2rad(get(handles.slider4, 'Value')));
 scara = scara.update();
 position_set(handles, scara);
 scara.plot(handles.axes1, get(handles.checkbox2,'Value'), get(handles.checkbox1,'Value'));
 handles.theta1.String = get(handles.slider1, 'Value');
+
+theta(2) = str2double(get(handles.theta2,'String'));
+set(handles.slider2, 'value', theta(2));
+global scara2
+scara2 = scara2.set_joint_variable(3, deg2rad(get(handles.slider2, 'Value')));
+scara2 = scara2.update();
+position_set(handles, scara2);
+scara2.plot(handles.axes1, get(handles.checkbox2,'Value'), get(handles.checkbox1,'Value'));
 handles.theta2.String = get(handles.slider2, 'Value');
+
+d3 = str2double(get(handles.d3,'String'));
+set(handles.slider3, 'value', d3);
+global scara3
+scara3 = scara3.set_joint_variable(4, get(handles.slider3, 'Value'));
+scara3 = scara3.update();
+position_set(handles, scara3);
+scara3.plot(handles.axes1, get(handles.checkbox2,'Value'), get(handles.checkbox1,'Value'));
 handles.d3.String = get(handles.slider3, 'Value');
+
+theta(4) = str2double(get(handles.theta4,'String'));
+set(handles.slider4, 'value', theta(4));
+global scara4
+scara4 = scara4.set_joint_variable(5, deg2rad(get(handles.slider4, 'Value')));
+scara4 = scara4.update();
+position_set(handles, scara4);
+scara4.plot(handles.axes1, get(handles.checkbox2,'Value'), get(handles.checkbox1,'Value'));
 handles.theta4.String = get(handles.slider4, 'Value');
-% 
-% theta(2) = str2double(get(handles.theta2,'String'));
-% set(handles.slider2, 'value', theta(2));
-% global scara2
-% scara2 = scara2.set_joint_variable(3, deg2rad(get(handles.slider2, 'Value')));
-% scara2 = scara2.update();
-% position_set(handles, scara2);
-% scara2.plot(handles.axes1, get(handles.checkbox2,'Value'), get(handles.checkbox1,'Value'));
-% handles.theta2.String = get(handles.slider2, 'Value');
-% 
-% d3 = str2double(get(handles.d3,'String'));
-% set(handles.slider3, 'value', d3);
-% global scara3
-% scara3 = scara3.set_joint_variable(4, get(handles.slider3, 'Value'));
-% scara3 = scara3.update();
-% position_set(handles, scara3);
-% scara3.plot(handles.axes1, get(handles.checkbox2,'Value'), get(handles.checkbox1,'Value'));
-% handles.d3.String = get(handles.slider3, 'Value');
-% 
-% theta(4) = str2double(get(handles.theta4,'String'));
-% set(handles.slider4, 'value', theta(4));
-% global scara4
-% scara4 = scara4.set_joint_variable(5, deg2rad(get(handles.slider4, 'Value')));
-% scara4 = scara4.update();
-% position_set(handles, scara4);
-% scara4.plot(handles.axes1, get(handles.checkbox2,'Value'), get(handles.checkbox1,'Value'));
-% handles.theta4.String = get(handles.slider4, 'Value');
 
 % --- Executes on button press in button_inverse.
 function button_inverse_Callback(hObject, eventdata, handles)
