@@ -180,7 +180,7 @@ classdef Arm
             zlabel(axes, 'z');
             xlim(axes, [obj.base(1)-8 obj.base(1)+8]);
             ylim(axes, [obj.base(2)-8 obj.base(2)+8]);
-            zlim(axes, [obj.base(3)   obj.base(3)+8]);
+            zlim(axes, [obj.base(3)   obj.base(3)+5]);
             obj.plot_frame(axes);
             if coords
                 coordinates(axes, obj.n, obj.T, obj.x);

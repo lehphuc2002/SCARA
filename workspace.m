@@ -34,6 +34,8 @@ function workspace(axis, a, alpha, d, theta)
     z2 = ones(1, size(point_hinh_tron, 2)) * 0;
     surf(axis, [x1;x1], [y1;y1], [z1;z2], 'FaceColor', Color1, 'EdgeColor', 'none', 'FaceAlpha', 0.7);
 
+
+    %
     point_hinh_tron2 = (linspace(0, 145, 120))*pi/180; 
     x1 = cos(point_hinh_tron2 + 125*pi/180)*(a(3)) + a(2)*cos(125*pi/180);
     y1 = sin(point_hinh_tron2 + 125*pi/180)*(a(3)) + a(2)*sin(125*pi/180);
