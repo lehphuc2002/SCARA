@@ -13,8 +13,8 @@ function coordinates(axes, n, T, x)
             
             % Plot ref frame of each joint
             axis_scale = 0.5;
-            quiver3(axes, x(1,:), x(2,:), x(3,:), coor_x(1,:), coor_x(2,:), coor_x(3,:), axis_scale, 'm', 'LineWidth', 2);
-            quiver3(axes, x(1,:), x(2,:), x(3,:), coor_y(1,:), coor_y(2,:), coor_y(3,:), axis_scale, 'g', 'LineWidth', 2);
-            quiver3(axes, x(1,:), x(2,:), x(3,:), coor_z(1,:), coor_z(2,:), coor_z(3,:), axis_scale, 'k', 'LineWidth', 2);
+            quiver3(axes, x(1,:), x(2,:), x(3,:), coor_x(1,:), coor_x(2,:), coor_x(3,:), axis_scale, 'm', 'LineWidth', 2); %tim
+            quiver3(axes, x(1,:), x(2,:), x(3,:), coor_y(1,:), coor_y(2,:), coor_y(3,:), axis_scale, 'g', 'LineWidth', 2); %green
+            quiver3(axes, x(1,:), x(2,:), x(3,:), coor_z(1,:), coor_z(2,:), coor_z(3,:), axis_scale, 'k', 'LineWidth', 2); %black
         end
 
