@@ -272,6 +272,13 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
+function yaw1_Callback(hObject, eventdata, handles)
+% hObject    handle to yaw1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of yaw1 as text
+%        str2double(get(hObject,'String')) returns contents of yaw1 as a double
 % --- Executes during object creation, after setting all properties.
 function yaw1_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to yaw1 (see GCBO)
@@ -596,10 +603,10 @@ end_posi(6) = deg2rad(str2double(get(handles.yaw2, 'String')));
 
 inverse_joint = inverse(scara.a, scara.alpha, scara.d, scara.theta, end_posi);
 
-th1 = inverse_joint(1)
-th2 = inverse_joint(2)
-d3  = inverse_joint(3)
-th4 = inverse_joint(4)
+th1 = inverse_joint(1); %return radian
+th2 = inverse_joint(2);
+d3  = inverse_joint(3);
+th4 = inverse_joint(4);
 
 scara = scara.set_joint_variable(2, th1);
 scara = scara.set_joint_variable(3, th2);
@@ -608,10 +615,20 @@ scara = scara.set_joint_variable(5, th4);
 scara = scara.update();
 position_set(handles, scara);
 scara.plot(handles.axes1, get(handles.checkbox2,'Value'), get(handles.checkbox1,'Value'));
+
+%theta(1) = str2double(get(handles.theta1,'String'));
+set(handles.slider1, 'value', rad2deg(th1));
+set(handles.slider2, 'value', rad2deg(th2));
+set(handles.slider3, 'value', (d3));
+set(handles.slider4, 'value', rad2deg(th4));
+
 handles.theta1.String = get(handles.slider1, 'Value');
 handles.theta2.String = get(handles.slider2, 'Value');
 handles.d3.String = get(handles.slider3, 'Value');
 handles.theta4.String = get(handles.slider4, 'Value');
+
+
+
 %%
 % --- Executes on button press in reset.
 function reset_Callback(hObject, eventdata, handles)
@@ -743,11 +760,23 @@ function button_run_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+% cla(handles.joint1_q); %clear do thi
+% cla(handles.joint1_v);
+% cla(handles.joint1_a);
+% cla(handles.joint2_q);
+% cla(handles.joint2_v);
+% cla(handles.joint2_a);
+% cla(handles.joint3_q);
+% cla(handles.joint3_v);
+% cla(handles.joint3_a);
+% cla(handles.joint4_q);
+% cla(handles.joint4_v);
+% cla(handles.joint4_a);
 
-vmax = str2double(get(handles.v_max, 'String'));
-amax = str2double(get(handles.a_max, 'String'));
+vmax = (str2double(get(handles.v_max, 'String')));
+amax = (str2double(get(handles.a_max, 'String')));
+
 global scara 
-
 
 end_posi = zeros(1, 6);
 end_posi(1) = str2double(get(handles.x2, 'String'));
@@ -757,18 +786,62 @@ end_posi(4) = deg2rad(str2double(get(handles.roll1, 'String')));
 end_posi(5) = deg2rad(str2double(get(handles.pitch1, 'String')));
 end_posi(6) = deg2rad(str2double(get(handles.yaw2, 'String')));
 
+pre_th1 = str2double(get(handles.theta1,'String'));
+pre_th2 = str2double(get(handles.theta2,'String'));
+pre_d3 = str2double(get(handles.d3,'String'));
+pre_th4 = str2double(get(handles.theta4,'String'));
+
 inverse_joint = inverse(scara.a, scara.alpha, scara.d, scara.theta, end_posi);
 
 th1 = inverse_joint(1);
-q_max = th1;
+th2 = inverse_joint(2);
+d3 = inverse_joint(3);
+th4 = inverse_joint(4);
+
+q1_max = abs(rad2deg(th1) - (pre_th1));
+q2_max = abs(rad2deg(th2) - (pre_th2));
+q3_max = abs(d3 - (pre_d3));
+q4_max = abs(rad2deg(th4) - (pre_th4));
 if handles.lspb_check.Value == true
-    [t, q, v, a] = LSPB_trajectory(q_max, vmax, amax);
+    [t1, q1, v1, a1] = LSPB_trajectory(q1_max, vmax, amax);
+    [t2, q2, v2, a2] = LSPB_trajectory(q2_max, vmax, amax);
+    [t3, q3, v3, a3] = LSPB_trajectory(q3_max, vmax, amax);
+    [t4, q4, v4, a4] = LSPB_trajectory(q4_max, vmax, amax);
 end
-for i=1:length(t)
-    plot(handles.joint1_q, t(1:i), q(1:i)*180/pi);
-    plot(handles.joint1_v, t(1:i), v(1:i));
-    plot(handles.joint1_a, t(1:i), a(1:i));
+for i=1:length(t4)
+    plot(handles.joint1_q, t1(1:i), q1(1:i));
+    plot(handles.joint1_v, t1(1:i), v1(1:i));
+    plot(handles.joint1_a, t1(1:i), a1(1:i));
+
+    plot(handles.joint2_q, t2(1:i), q2(1:i));
+    plot(handles.joint2_v, t2(1:i), v2(1:i));
+    plot(handles.joint2_a, t2(1:i), a2(1:i));
+
+    plot(handles.joint3_q, t3(1:i), q3(1:i));
+    plot(handles.joint3_v, t3(1:i), v3(1:i));
+    plot(handles.joint3_a, t3(1:i), a3(1:i));
+
+    plot(handles.joint4_q, t4(1:i), q4(1:i));
+    plot(handles.joint4_v, t4(1:i), v4(1:i));
+    plot(handles.joint4_a, t4(1:i), a4(1:i));
+
+    %animation
+    global scara
+    scara = scara.set_joint_variable(2, q1(i));
+    scara = scara.set_joint_variable(3, q2(i));
+    scara = scara.set_joint_variable(4, q3(i));
+    scara = scara.set_joint_variable(5, q4(i));
+    scara = scara.update();
+    position_set(handles, scara);
+    scara.plot(handles.axes1, get(handles.checkbox2,'Value'), get(handles.checkbox1,'Value'));
+    
+    pause(0.05);
 end
+
+
+
+
+
 
 % th2 = inverse_joint(2);
 % d3  = inverse_joint(3);
@@ -785,7 +858,7 @@ function v_max_Callback(hObject, eventdata, handles)
 
 
 
-function a_max_Callback(hObject, eventdata, handles)
+ function a_max_Callback(hObject, eventdata, handles)
 % hObject    handle to a_max (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)

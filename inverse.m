@@ -6,7 +6,7 @@ function inv = inverse(a, alpha, d, theta, end_effector)
     s1 = ((a(2)+a(3)*c2)*end_effector(2) - a(3)*s2*end_effector(1))/(end_effector(1)^2 + end_effector(2)^2); %sintheta1
     c1 = ((a(2)+a(3)*c2)*end_effector(1) + a(3)*s2*end_effector(2))/(end_effector(1)^2 + end_effector(2)^2);
     inv(1) = atan2(s1, c1); %theta1
-    inv(4) = wrapToPi(-(inv(1) + inv(2) - end_effector(6))); %theta4, do no di tu -360 -> 360 nen ta gioi han lai tu -pi -> pi bang ham wraptoPi
+    inv(4) = wrapToPi((inv(1) + inv(2) - end_effector(6))); %theta4, do no di tu -360 -> 360 nen ta gioi han lai tu -pi -> pi bang ham wraptoPi
     inv(3) = +d(1) - end_effector(3);   %d3 = z - d1
     
     %%

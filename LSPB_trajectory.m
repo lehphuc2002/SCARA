@@ -1,4 +1,7 @@
 function [t, q, v, a] = LSPB_trajectory(qf, vmax, amax)
+qf = abs(deg2rad(qf));
+vmax = deg2rad(vmax);
+amax = deg2rad(amax);
 if vmax > sqrt(qf*amax)
     vmax = sqrt(qf*amax);
     warndlg('Vmax is sqrt(qmax*amax), because vmax is >sqrt(qmax*max)', 'Warning');
