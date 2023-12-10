@@ -12,7 +12,7 @@ end
     tm = qm/vmax;   %t middle , tu tc --> tf-tc
     tf = 2*tc + tm;
     
-    t = linspace(0, tf, 100);
+    t = linspace(0, tf, 50);
     q = zeros(size(t));
     v = zeros(size(t));
     a = zeros(size(t));

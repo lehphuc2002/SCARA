@@ -52,12 +52,13 @@ function workspace(axis, a, alpha, d, theta)
     surf(axis, [x1;x1], [y1;y1], [z1;z2], 'FaceColor', Color2, 'EdgeColor', 'none', 'FaceAlpha', 0.7);
     plot(axis, x1,y1, 'm', 'LineWidth', 2);
     
-    point_hinh_tron3 = (linspace(0, 360, 180))*pi/180; 
-    x1 = cos(point_hinh_tron3)*(a(2));
-    y1 = sin(point_hinh_tron3)*(a(2));
+    point_hinh_tron3 = (linspace(-125, 125, 120))*pi/180; 
+    x1 = cos(point_hinh_tron3)*(a(3) + a(2));
+    y1 = sin(point_hinh_tron3)*(a(3) + a(2));
     z1 = ones(1, size(point_hinh_tron3, 2)) * (d(1));
     z2 = ones(1, size(point_hinh_tron3, 2)) * 0;
-    surf(axis, [x1;x1], [y1;y1], [z1;z2], 'FaceColor', 'g', 'EdgeColor', 'none', 'FaceAlpha', 0.35);
-    plot(axis, x1,y1, 'g', 'LineWidth', 2);
+    surf(axis, [x1;x1], [y1;y1], [z1;z2], 'FaceColor', Color1, 'EdgeColor', 'none', 'FaceAlpha', 0.7);
+    plot(axis, x1,y1, 'y', 'LineWidth', 2);
+
 
 end

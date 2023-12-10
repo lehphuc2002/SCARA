@@ -567,16 +567,17 @@ function button_forward_Callback(hObject, eventdata, handles)
 theta(1) = str2double(get(handles.theta1,'String'));
 set(handles.slider1, 'value', theta(1));
 theta(2) = str2double(get(handles.theta2,'String'));
+set(handles.slider2, 'value', theta(2));
 if (theta(2) == 0)
     warndlg('Check diem ky di', 'Warning');
     return;
 end
-set(handles.slider2, 'value', theta(2));
 d3 = str2double(get(handles.d3,'String'));
 set(handles.slider3, 'value', d3);
 theta(4) = str2double(get(handles.theta4,'String'));
 set(handles.slider4, 'value', theta(4));
 global scara
+
 scara = scara.set_joint_variable(2, deg2rad(get(handles.slider1, 'Value')));
 scara = scara.set_joint_variable(3, deg2rad(get(handles.slider2, 'Value')));
 scara = scara.set_joint_variable(4, get(handles.slider3, 'Value'));
