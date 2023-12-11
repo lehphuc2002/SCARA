@@ -22,7 +22,7 @@ function varargout = main_gui(varargin)
 
 % Edit the above text to modify the response to help main_gui
 
-% Last Modified by GUIDE v2.5 09-Dec-2023 16:17:02
+% Last Modified by GUIDE v2.5 11-Dec-2023 09:51:02
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -83,7 +83,7 @@ global scara
 a     = [0 2 3 0 0]; %link 0 1 2 3 4 
 alpha = [0 0 0 0 180];
 d     = [1.79 0 0 0 0];
-theta = [0 0 50 0 0];
+theta = [0 0 90 0 0];
 type = ['b', 'r', 'r', 'p', 'r']; % base, xoay, xoay, truot, xoay
 base = [0; 0; 0];
 scara = Arm(a, alpha_, d, theta, type, base);
@@ -750,19 +750,75 @@ function button_run_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% cla(handles.joint1_q); %clear do thi
-% cla(handles.joint1_v);
-% cla(handles.joint1_a);
-% cla(handles.joint2_q);
-% cla(handles.joint2_v);
-% cla(handles.joint2_a);
-% cla(handles.joint3_q);
-% cla(handles.joint3_v);
-% cla(handles.joint3_a);
-% cla(handles.joint4_q);
-% cla(handles.joint4_v);
-% cla(handles.joint4_a);
-
+% vmax = (str2double(get(handles.v_max, 'String')));
+% amax = (str2double(get(handles.a_max, 'String')));
+% 
+% end_posi = zeros(1, 6);
+% end_posi(1) = str2double(get(handles.x2, 'String'));
+% end_posi(2) = str2double(get(handles.y2, 'String'));
+% end_posi(3) = str2double(get(handles.z2, 'String'));
+% end_posi(4) = deg2rad(str2double(get(handles.roll1, 'String')));
+% end_posi(5) = deg2rad(str2double(get(handles.pitch1, 'String')));
+% end_posi(6) = deg2rad(str2double(get(handles.yaw2, 'String')));
+% 
+% pre_th1 = str2double(get(handles.theta1,'String'));
+% pre_th2 = str2double(get(handles.theta2,'String'));
+% pre_d3 = str2double(get(handles.d3,'String'));
+% pre_th4 = str2double(get(handles.theta4,'String'));
+% 
+% global scara
+% inverse_joint = inverse(scara.a, scara.alpha, scara.d, scara.theta, end_posi);
+% 
+% th1 = inverse_joint(1);
+% th2 = inverse_joint(2);
+% d3 = inverse_joint(3);
+% th4 = inverse_joint(4);
+% 
+% q1_max = rad2deg(th1) - (pre_th1);
+% q2_max = rad2deg(th2) - (pre_th2);
+% q3_max = d3 - (pre_d3);
+% q4_max = rad2deg(th4) - (pre_th4);
+% if handles.lspb_check.Value == true
+%     [t1, q1, v1, a1] = LSPB_trajectory(q1_max, vmax, amax);
+%     [t2, q2, v2, a2] = LSPB_trajectory(q2_max, vmax, amax);
+%     [t3, q3, v3, a3] = LSPB_trajectory(q3_max, vmax, amax);
+%     [t4, q4, v4, a4] = LSPB_trajectory(q4_max, vmax, amax);
+% end
+% 
+% if handles.scurve_check.Value == true
+%     [t1, q1, v1, a1] = Scurve_trajectory(q1_max, vmax, amax);
+%     [t2, q2, v2, a2] = Scurve_trajectory(q2_max, vmax, amax);
+%     [t3, q3, v3, a3] = Scurve_trajectory(q3_max, vmax, amax);
+%     [t4, q4, v4, a4] = Scurve_trajectory(q4_max, vmax, amax);
+% end
+% for i=1:length(t4)
+%     plot(handles.joint1_q, t1(1:i), q1(1:i));
+%     plot(handles.joint1_v, t1(1:i), v1(1:i));
+%     plot(handles.joint1_a, t1(1:i), a1(1:i));
+% 
+%     plot(handles.joint2_q, t2(1:i), q2(1:i));
+%     plot(handles.joint2_v, t2(1:i), v2(1:i));
+%     plot(handles.joint2_a, t2(1:i), a2(1:i));
+% 
+%     plot(handles.joint3_q, t3(1:i), q3(1:i));
+%     plot(handles.joint3_v, t3(1:i), v3(1:i));
+%     plot(handles.joint3_a, t3(1:i), a3(1:i));
+% 
+%     plot(handles.joint4_q, t4(1:i), q4(1:i));
+%     plot(handles.joint4_v, t4(1:i), v4(1:i));
+%     plot(handles.joint4_a, t4(1:i), a4(1:i));
+% 
+%     %animation
+%     scara = scara.set_joint_variable(2, deg2rad(pre_th1 + q1(i)));
+%     scara = scara.set_joint_variable(3, deg2rad(pre_th2 + q2(i)));
+%     scara = scara.set_joint_variable(4, pre_d3 + (q3(i)));
+%     scara = scara.set_joint_variable(5, deg2rad(pre_th4 + q4(i)));
+%     scara = scara.update();
+%     position_set(handles, scara);
+%     scara.plot(handles.axes1, get(handles.checkbox2,'Value'), get(handles.checkbox1,'Value'));
+%     
+%     pause(0.05);
+% end
 vmax = (str2double(get(handles.v_max, 'String')));
 amax = (str2double(get(handles.a_max, 'String')));
 
@@ -778,26 +834,50 @@ pre_th1 = str2double(get(handles.theta1,'String'));
 pre_th2 = str2double(get(handles.theta2,'String'));
 pre_d3 = str2double(get(handles.d3,'String'));
 pre_th4 = str2double(get(handles.theta4,'String'));
+
+
 global scara
 inverse_joint = inverse(scara.a, scara.alpha, scara.d, scara.theta, end_posi);
 
-th1 = inverse_joint(1);
-th2 = inverse_joint(2);
-d3 = inverse_joint(3);
-th4 = inverse_joint(4);
+th1 = inverse_joint(1)
+th2 = inverse_joint(2)
+d3 = inverse_joint(3)
+th4 = inverse_joint(4)
 
-q1_max = abs(rad2deg(th1) - (pre_th1));
-q2_max = abs(rad2deg(th2) - (pre_th2));
-q3_max = abs(d3 - (pre_d3));
-q4_max = abs(rad2deg(th4) - (pre_th4));
+q1_max = rad2deg(th1) - (pre_th1)
+q2_max = rad2deg(th2) - (pre_th2)
+q3_max = d3 - (pre_d3)
+q4_max = rad2deg(th4) - (pre_th4)
+
+preX = str2double(get(handles.x1, 'String')) ;
+preY = str2double(get(handles.y1, 'String'));
+preZ = str2double(get(handles.z1, 'String'));
+
+X = str2double(get(handles.x2, 'String'));
+Y = str2double(get(handles.y2, 'String'));
+Z = str2double(get(handles.z2, 'String'));
+q0_max = sqrt((X-preX)^2 + (Y - preY)^2 +(Z - preZ)^2);
 if handles.lspb_check.Value == true
-    [t1, q1, v1, a1] = LSPB_trajectory(q1_max, vmax, amax);
-    [t2, q2, v2, a2] = LSPB_trajectory(q2_max, vmax, amax);
-    [t3, q3, v3, a3] = LSPB_trajectory(q3_max, vmax, amax);
-    [t4, q4, v4, a4] = LSPB_trajectory(q4_max, vmax, amax);
-end
+    [t0, q0, v0, a0] = LSPB_trajectory(q0_max, vmax, amax);
+    [t1, q1, v1, a1] = LSPB_trajectory(q1_max, vmax/3, amax/13);
+    [t2, q2, v2, a2] = LSPB_trajectory(q2_max, vmax/2, amax/10);
+    [t3, q3, v3, a3] = LSPB_trajectory(q3_max, vmax/5, amax/3);
+    [t4, q4, v4, a4] = LSPB_trajectory(q4_max, vmax/3, amax/8);
 
+end
+if handles.scurve_check.Value == true
+    [t0, q0, v0, a0] = Scurve_trajectory(q0_max, vmax, amax);
+    [t1, q1, v1, a1] = Scurve_trajectory(q1_max, vmax/3, amax/13);
+    [t2, q2, v2, a2] = Scurve_trajectory(q2_max, vmax/2, amax/10);
+    [t3, q3, v3, a3] = Scurve_trajectory(q3_max, vmax/5, amax/3);
+    [t4, q4, v4, a4] = Scurve_trajectory(q4_max, vmax/5, amax/10)
+
+end
 for i=1:length(t4)
+    plot(handles.axes20_q, t0(1:i), q0(1:i));
+    plot(handles.axes21_v, t0(1:i), v0(1:i));
+    plot(handles.axes22_a, t0(1:i), a0(1:i));
+
     plot(handles.joint1_q, t1(1:i), q1(1:i));
     plot(handles.joint1_v, t1(1:i), v1(1:i));
     plot(handles.joint1_a, t1(1:i), a1(1:i));
@@ -815,16 +895,43 @@ for i=1:length(t4)
     plot(handles.joint4_a, t4(1:i), a4(1:i));
 
     %animation
-    scara = scara.set_joint_variable(2, q1(i));
-    scara = scara.set_joint_variable(3, q2(i));
-    scara = scara.set_joint_variable(4, q3(i));
-    scara = scara.set_joint_variable(5, q4(i));
+    scara = scara.set_joint_variable(2, deg2rad(pre_th1+ q1(i)));
+    scara = scara.set_joint_variable(3, deg2rad(pre_th2+ q2(i)));
+    scara = scara.set_joint_variable(4, pre_d3+ q3(i));
+    scara = scara.set_joint_variable(5, deg2rad(pre_th4+ q4(i)));
     scara = scara.update();
     position_set(handles, scara);
     scara.plot(handles.axes1, get(handles.checkbox2,'Value'), get(handles.checkbox1,'Value'));
     
-    pause(0.05);
+    % slider chuyen dong theo animation
+    end_posi = zeros(1, 6);
+    end_posi(1) = str2double(get(handles.x1, 'String'));
+    end_posi(2) = str2double(get(handles.y1, 'String'));
+    end_posi(3) = str2double(get(handles.z1, 'String'));
+    end_posi(4) = deg2rad(str2double(get(handles.roll1, 'String')));
+    end_posi(5) = deg2rad(str2double(get(handles.pitch1, 'String')));
+    end_posi(6) = deg2rad(str2double(get(handles.yaw1, 'String')));
+    inverse_joint = inverse(scara.a, scara.alpha, scara.d, scara.theta, end_posi);
+    update_th1 = rad2deg(inverse_joint(1));
+    update_th2 = rad2deg(inverse_joint(2));
+    update_d3 = inverse_joint(3);
+    update_th4 = rad2deg(inverse_joint(4));
+    handles.theta1.String=update_th1;
+    handles.theta2.String=update_th2;
+    handles.d3.String = update_d3;
+    handles.theta4.String=update_th4;
+    set(handles.slider1, 'value', update_th1);
+    set(handles.slider2, 'value', update_th2);
+    set(handles.slider3, 'value', update_d3);
+    set(handles.slider4, 'value', update_th4);
+  %  pause(0.001);
+    
 end
+warndlg('Done');
+
+
+
+
 
 
 
@@ -833,3 +940,33 @@ function v_max_Callback(hObject, eventdata, handles)
 function a_max_Callback(hObject, eventdata, handles)
 
 function lspb_check_Callback(hObject, eventdata, handles)
+
+
+% --- Executes on button press in scurve_check.
+function scurve_check_Callback(hObject, eventdata, handles)
+% hObject    handle to scurve_check (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of scurve_check
+
+
+% --- Executes on button press in button_joint.
+function button_joint_Callback(hObject, eventdata, handles)
+% hObject    handle to button_joint (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+set(handles.graph_3,'visible','off','position',[0.003 -0.001 0.99 1.017]);
+set(handles.graph_12,'visible','on','position',[0.007 0.025 0.99 0.965]);
+set(handles.button_joint,'BackgroundColor','#4DBEEE','fontweight','bold','fontsize',8);
+set(handles.button_trajectory,'BackgroundColor','#FAEBFF','fontweight','normal','fontsize',8);
+
+% --- Executes on button press in button_trajectory.
+function button_trajectory_Callback(hObject, eventdata, handles)
+% hObject    handle to button_trajectory (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+set(handles.graph_3,'visible','on','position',[0.025 0.039 0.959 0.947]);
+set(handles.graph_12,'visible','off','position',[0.007 0.025 0.99 0.965]);
+set(handles.button_trajectory,'BackgroundColor','#4DBEEE','fontweight','bold','fontsize',8);
+set(handles.button_joint,'BackgroundColor','#FAEBFF','fontweight','normal','fontsize',8);

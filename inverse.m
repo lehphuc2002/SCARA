@@ -1,7 +1,10 @@
 function inv = inverse(a, alpha, d, theta, end_effector)
-   
-    c2 = (end_effector(1)^2 + end_effector(2)^2 - a(2)^2 - a(3)^2)/(2*a(2)*a(3));  %costheta2
-    s2 = sqrt(1 - c2^2);  %sintheta2
+    c2 = (end_effector(1)^2 + end_effector(2)^2 - a(2)^2 - a(3)^2)/(2*a(2)*a(3))  %costheta2
+    if (c2 > 1)
+        warndlg('c2 out workspace', 'Warning');
+        return;
+    end
+    s2 = sqrt(1 - c2^2)  %sintheta2
     inv(2) = atan2(s2, c2); %theta2
     s1 = ((a(2)+a(3)*c2)*end_effector(2) - a(3)*s2*end_effector(1))/(end_effector(1)^2 + end_effector(2)^2); %sintheta1
     c1 = ((a(2)+a(3)*c2)*end_effector(1) + a(3)*s2*end_effector(2))/(end_effector(1)^2 + end_effector(2)^2);
